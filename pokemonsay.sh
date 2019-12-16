@@ -31,7 +31,7 @@ usage() {
 
 list_pokemon() {
 	echo "Pokémon available in '$POKEMON/':"
-	cat ./Poké.dex
+	ls -1 ./cows/ | sed 's/\.cow$//g'
 	exit 0
 }
 
@@ -39,16 +39,16 @@ list_pokemon() {
 WORD_WRAP="-n"
 
 while getopts ":p:f:wnNlh" Option ; do
-  case $Option in
-    f ) COWFILE="$OPTARG" ;;
-    p ) I_CHOOSE="$OPTARG" ;;
-    w ) WORD_WRAP="-W $OPTARG" ;;
-    n ) DISABLE_WRAP=true   ;;
-    N ) DISABLE_NAME=true   ;;
-    l ) list_pokemon        ;;
-    h ) usage               ;;
-    * ) echo "Unimplemented option chosen." && usage ;;
-  esac
+	case $Option in
+		f ) COWFILE="$OPTARG" ;;
+		p ) I_CHOOSE="$OPTARG" ;;
+		w ) WORD_WRAP="-W $OPTARG" ;;
+		n ) DISABLE_WRAP=true   ;;
+		N ) DISABLE_NAME=true   ;;
+		l ) list_pokemon        ;;
+		h ) usage               ;;
+		* ) echo "Unimplemented option chosen." && usage ;;
+	esac
 done
 
 shift $(($OPTIND - 1))
@@ -61,10 +61,10 @@ if [ -n "$I_CHOOSE" ]; then
 elif [ -n "$COW_FILE" ]; then
 	cowsay -f "$COW_FILE" $WORD_WRAP "$MESSAGE"
 else
-  a=(cows/*)
-  I_CHOOSE=${a[$((RANDOM % ${#a[@]}))]}
-  I_CHOOSE=${I_CHOOSE#cows/}
-  I_CHOOSE=${I_CHOOSE%.cow}
+	a=(cows/*)
+	I_CHOOSE=${a[$((RANDOM % ${#a[@]}))]}
+	I_CHOOSE=${I_CHOOSE#cows/}
+	I_CHOOSE=${I_CHOOSE%.cow}
 	cowsay -f $PWD/cows/$I_CHOOSE.cow $WORD_WRAP "$MESSAGE"
 fi
 
